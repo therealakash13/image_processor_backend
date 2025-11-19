@@ -12,7 +12,7 @@ const server = express();
 const port = 3000;
 
 server.use(express.json()); // parsing json
-server.use(cors({ origin: "https://image-processor-frontend-qk28z0pgi-therealakash13s-projects.vercel.app" })); // cors config
+server.use(cors({ origin: "https://image-processor-frontend-gules.vercel.app" })); // cors config
 server.use(bodyParser.urlencoded({ extended: true })); // body parsing
 
 server.get("/", (req, res) => {
