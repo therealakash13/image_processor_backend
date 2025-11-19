@@ -11,19 +11,21 @@ import {
 const server = express();
 const port = 3000;
 
-server.use(express.json()); // parsing json
 server.use(
   cors({
-    origin: (origin, callback) => {
+    origin: (origin, cb) => {
       if (!origin || origin.endsWith(".vercel.app")) {
-        return callback(null, true);
+        return cb(null, true);
       }
-
-      console.error("CORS blocked origin:", origin);
-      return callback(new Error("Not allowed by CORS"));
+      console.error("Blocked by CORS:", origin);
+      return cb(new Error("Not allowed by CORS"));
     },
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
   })
-); // cors config
+);
+server.options("/upload", cors());
+server.use(express.json()); // parsing json
 server.use(bodyParser.urlencoded({ extended: true })); // body parsing
 
 server.get("/", (req, res) => {
@@ -80,5 +82,10 @@ server.post(
     }
   }
 );
+
+server.use((err, req, res, next) => {
+  console.error("🔥 Server error:", err.message);
+  res.status(400).json({ error: err.message });
+});
 
 server.listen(port, () => console.log(`Server is running on port ${port}`));
