@@ -12,7 +12,18 @@ const server = express();
 const port = 3000;
 
 server.use(express.json()); // parsing json
-server.use(cors({ origin: "https://image-processor-frontend-1vqupc5ns-therealakash13s-projects.vercel.app" })); // cors config
+server.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
+
+      console.error("CORS blocked origin:", origin);
+      return callback(new Error("Not allowed by CORS"));
+    },
+  })
+); // cors config
 server.use(bodyParser.urlencoded({ extended: true })); // body parsing
 
 server.get("/", (req, res) => {
