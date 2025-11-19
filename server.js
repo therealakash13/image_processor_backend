@@ -11,19 +11,7 @@ import {
 const server = express();
 const port = 3000;
 
-server.use(
-  cors({
-    origin: (origin, cb) => {
-      if (!origin || origin.endsWith(".vercel.app")) {
-        return cb(null, true);
-      }
-      console.error("Blocked by CORS:", origin);
-      return cb(new Error("Not allowed by CORS"));
-    },
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
+server.use(cors()); // cors config
 server.options("/upload", cors());
 server.use(express.json()); // parsing json
 server.use(bodyParser.urlencoded({ extended: true })); // body parsing
