@@ -27,8 +27,6 @@ server.post(
     const inputBuffer = req.body; // extracting image buffer from request
     const level = Number(req.query.level); // extracting intensity of blur, rotate and sharpness
 
-    console.log(level);
-
     try {
       let bufferStream = "";
       switch (operation) {
